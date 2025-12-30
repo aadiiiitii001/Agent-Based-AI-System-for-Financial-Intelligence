@@ -97,7 +97,7 @@ finance-agent-ai/
 
 ### 1️⃣ Clone Repository
 ```bash
-git clone https://github.com/your-username/finance-agent-ai.git
+git clone https://github.com/aadiiiitii001/finance-agent-ai.git
 cd finance-agent-ai
 ```
 ### 2️⃣ Install Dependencies

@@ -10,7 +10,7 @@ class RiskAgent:
     """
 
     def __init__(self):
-        self.api_key = os.getenv("3XKO7J60NL23QRW7")
+        self.api_key = os.getenv("ALPHAVANTAGE_API_KEY")
         self.base_url = "https://www.alphavantage.co/query"
         self.name = "RiskAgent"
         self.mcp = MCPServer()

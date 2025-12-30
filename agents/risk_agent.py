@@ -15,7 +15,7 @@ class RiskAgent:
         self.name = "RiskAgent"
         self.mcp = MCPServer()
 
-    def extract_symbol(self, query: str) -> str:
+    def extract_symbol(self, query):
         """
         Very simple symbol extraction logic.
         Can be replaced with NLP / NER later.

@@ -41,3 +41,15 @@ This system aligns directly with **current IT & finance trends**:
 ---
 
 ## 📂 Project Structure
+```text
+finance-agent-ai/
+├── agents/ # AI agents (Risk, Compliance, Orchestrator)
+├── api/ # FastAPI backend
+├── mcp_server/ # MCP tool governance layer
+├── db/ # Database models & audit logs
+├── utils/ # Logging, security, helpers
+├── tests/ # Unit tests
+├── docker/ # Docker & docker-compose
+├── requirements.txt
+└── README.md
+```

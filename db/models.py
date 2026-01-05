@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime, JSON
+from sqlalchemy.orm import declarative_base
 from datetime import datetime
-from db.database import Base
 
+Base = declarative_base()
 
 class AuditLog(Base):
     __tablename__ = "audit_logs"

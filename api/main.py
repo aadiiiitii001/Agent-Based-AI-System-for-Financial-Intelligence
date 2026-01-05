@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 
 # Import your DB setup and models
-from db import SessionLocal, Base, engine
+from db.database import SessionLocal, engine
+from db.models import Base
 from models import User  # example model, adjust to your actual models
 from api.routes import router
 from api.auth import create_access_token

@@ -1,8 +1,10 @@
+import os
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from fastapi import HTTPException, status
 
-SECRET_KEY = "SUPER_SECRET_KEY"
+# Reads from environment variable if set, otherwise uses default
+SECRET_KEY = os.getenv("SECRET_KEY", "SUPER_SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 

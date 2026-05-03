@@ -1,13 +1,11 @@
 
 import os
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
-from fastapi import FastAPI, Depends, HTTPException
 
 from db.database import SessionLocal, engine
 from db.models import Base
@@ -50,18 +48,11 @@ def root():
 def dashboard():
     return FileResponse("static/index.html")
 
-# Login — supports both JSON body and OAuth2 form
+# Login
 @app.post("/login")
 def login(data: LoginRequest):
     if data.username == "admin" and data.password == "admin":
         token = create_access_token({"sub": data.username, "role": "admin"})
-        return {"access_token": token, "token_type": "bearer"}
-    raise HTTPException(status_code=401, detail="Invalid credentials")
-
-@app.post("/token")
-def token(form: OAuth2PasswordRequestForm = Depends()):
-    if form.username == "admin" and form.password == "admin":
-        token = create_access_token({"sub": form.username, "role": "admin"})
         return {"access_token": token, "token_type": "bearer"}
     raise HTTPException(status_code=401, detail="Invalid credentials")
 

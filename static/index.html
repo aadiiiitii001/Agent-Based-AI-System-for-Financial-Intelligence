@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,27 +10,21 @@
   body{font-family:system-ui,sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh}
   a{color:#60a5fa;text-decoration:none}
   a:hover{text-decoration:underline}
-
   .header{background:linear-gradient(135deg,#1e2a3a,#0f1117);border-bottom:1px solid #1e3a5f;padding:2rem 2rem 1.5rem}
   .header h1{font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:.4rem}
   .header p{font-size:.875rem;color:#94a3b8;max-width:560px;line-height:1.6}
   .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:.75rem}
   .badge{font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.03em}
   .b-green{background:#064e3b;color:#6ee7b7}.b-blue{background:#1e3a5f;color:#60a5fa}.b-amber{background:#451a03;color:#fbbf24}.b-purple{background:#2e1065;color:#c4b5fd}
-
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1e293b;border-top:1px solid #1e293b;border-bottom:1px solid #1e293b}
   .stat{background:#0f1117;padding:1.1rem 1.25rem;text-align:center}
   .stat-num{font-size:1.6rem;font-weight:700;color:#fff}
   .stat-label{font-size:.72rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
-
   .main{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #1e293b}
   @media(max-width:640px){.main{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
-
   .panel{padding:1.5rem;border-right:1px solid #1e293b}
   .panel:last-child{border-right:none}
   .panel-title{font-size:.72rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem}
-
-  .pipeline{display:flex;flex-direction:column;gap:0}
   .pipe-step{display:flex;align-items:center;gap:10px;padding:.55rem .75rem;border-radius:8px;border:1px solid #1e293b;background:#0d1520;margin-bottom:6px;transition:all .3s}
   .pipe-step.active{border-color:#1d9e75;background:#022c22}
   .pipe-step.done{border-color:#1e3a5f;background:#0a1628}
@@ -40,7 +35,6 @@
   .pipe-step.active .pipe-name{color:#6ee7b7}
   .pipe-step.done .pipe-name{color:#60a5fa}
   .pipe-desc{font-size:.7rem;color:#475569;margin-left:auto}
-
   .query-box{display:flex;flex-direction:column;gap:10px}
   .chips{display:flex;flex-wrap:wrap;gap:6px}
   .chip{font-size:.72rem;padding:4px 10px;border-radius:20px;border:1px solid #1e3a5f;background:#0d1a2d;color:#60a5fa;cursor:pointer;transition:all .15s}
@@ -51,7 +45,6 @@
   .btn{background:#1d4ed8;color:#fff;border:none;border-radius:8px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
   .btn:hover{background:#2563eb}
   .btn:disabled{background:#1e293b;color:#475569;cursor:not-allowed}
-
   .result{border:1px solid #1e293b;border-radius:10px;overflow:hidden;margin-top:4px}
   .result-head{display:flex;justify-content:space-between;align-items:center;padding:.5rem .875rem;background:#0d1520;border-bottom:1px solid #1e293b;font-size:.72rem}
   .result-head span:first-child{color:#94a3b8;font-weight:500}
@@ -64,21 +57,17 @@
   .flag{font-size:.7rem;padding:3px 9px;border-radius:20px}
   .f-ok{background:#022c22;color:#6ee7b7}.f-warn{background:#451a03;color:#fbbf24}.f-info{background:#0c1a2e;color:#60a5fa}
   pre{background:#060d18;border:1px solid #1e293b;border-radius:6px;padding:.75rem;font-size:.7rem;color:#94a3b8;overflow-x:auto;margin-top:.75rem;white-space:pre-wrap;max-height:160px;overflow-y:auto}
-
   .tech-grid{display:flex;flex-wrap:wrap;gap:6px}
   .tech-tag{font-size:.72rem;padding:4px 10px;border-radius:6px;background:#0d1520;border:1px solid #1e293b;color:#94a3b8}
-
   .links{display:flex;gap:8px;flex-wrap:wrap;padding:1rem 1.5rem;border-top:1px solid #1e293b}
   .link-btn{font-size:.8rem;padding:.45rem 1rem;border-radius:8px;border:1px solid #1e3a5f;background:#0d1a2d;color:#60a5fa;cursor:pointer}
   .link-btn:hover{background:#1e3a5f}
-
   .placeholder{color:#475569;font-size:.8rem;font-style:italic;padding:.5rem 0}
   .spinner{display:inline-block;width:12px;height:12px;border:2px solid #1e293b;border-top-color:#60a5fa;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
   @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-
 <div class="header">
   <h1>🤖 Enterprise Agent-Based Financial AI</h1>
   <p>Multi-agent system using MCP & Secure Tool Orchestration. Autonomously gathers financial data, analyzes risk & trends, validates compliance, and produces structured reports.</p>
@@ -92,78 +81,33 @@
     <span class="badge b-blue">Render · Live</span>
   </div>
 </div>
-
 <div class="stats">
   <div class="stat"><div class="stat-num">3</div><div class="stat-label">API endpoints</div></div>
   <div class="stat"><div class="stat-num">70</div><div class="stat-label">Git commits</div></div>
   <div class="stat"><div class="stat-num">18</div><div class="stat-label">Deployments</div></div>
   <div class="stat"><div class="stat-num">3</div><div class="stat-label">AI agents</div></div>
 </div>
-
 <div class="main">
-  <!-- Left: Pipeline -->
   <div class="panel">
     <div class="panel-title">Agent pipeline</div>
     <div class="pipeline">
-      <div class="pipe-step" id="ps-user">
-        <div class="pipe-dot"></div>
-        <div>
-          <div class="pipe-name">User query</div>
-          <div class="pipe-desc">Input received</div>
-        </div>
-      </div>
-      <div class="pipe-step" id="ps-orch">
-        <div class="pipe-dot"></div>
-        <div>
-          <div class="pipe-name">Orchestrator agent</div>
-          <div class="pipe-desc">Routes to agents</div>
-        </div>
-      </div>
-      <div class="pipe-step" id="ps-mcp">
-        <div class="pipe-dot"></div>
-        <div>
-          <div class="pipe-name">MCP server</div>
-          <div class="pipe-desc">Secure tool dispatch</div>
-        </div>
-      </div>
-      <div class="pipe-step" id="ps-risk">
-        <div class="pipe-dot"></div>
-        <div>
-          <div class="pipe-name">Risk agent</div>
-          <div class="pipe-desc">Volatility & scoring</div>
-        </div>
-      </div>
-      <div class="pipe-step" id="ps-comp">
-        <div class="pipe-dot"></div>
-        <div>
-          <div class="pipe-name">Compliance agent</div>
-          <div class="pipe-desc">Regulatory check</div>
-        </div>
-      </div>
-      <div class="pipe-step" id="ps-out">
-        <div class="pipe-dot"></div>
-        <div>
-          <div class="pipe-name">Structured report</div>
-          <div class="pipe-desc">Output generated</div>
-        </div>
-      </div>
+      <div class="pipe-step" id="ps-user"><div class="pipe-dot"></div><div><div class="pipe-name">User query</div><div class="pipe-desc">Input received</div></div></div>
+      <div class="pipe-step" id="ps-orch"><div class="pipe-dot"></div><div><div class="pipe-name">Orchestrator agent</div><div class="pipe-desc">Routes to agents</div></div></div>
+      <div class="pipe-step" id="ps-mcp"><div class="pipe-dot"></div><div><div class="pipe-name">MCP server</div><div class="pipe-desc">Secure tool dispatch</div></div></div>
+      <div class="pipe-step" id="ps-risk"><div class="pipe-dot"></div><div><div class="pipe-name">Risk agent</div><div class="pipe-desc">Volatility & scoring</div></div></div>
+      <div class="pipe-step" id="ps-comp"><div class="pipe-dot"></div><div><div class="pipe-name">Compliance agent</div><div class="pipe-desc">Regulatory check</div></div></div>
+      <div class="pipe-step" id="ps-out"><div class="pipe-dot"></div><div><div class="pipe-name">Structured report</div><div class="pipe-desc">Output generated</div></div></div>
     </div>
     <div style="margin-top:1rem">
       <div class="panel-title">Tech stack</div>
       <div class="tech-grid">
-        <span class="tech-tag">FastAPI</span>
-        <span class="tech-tag">SQLAlchemy</span>
-        <span class="tech-tag">SQLite</span>
-        <span class="tech-tag">JWT + bcrypt</span>
-        <span class="tech-tag">MCP Protocol</span>
-        <span class="tech-tag">Docker Compose</span>
-        <span class="tech-tag">Pytest</span>
-        <span class="tech-tag">OpenAPI 3.1</span>
+        <span class="tech-tag">FastAPI</span><span class="tech-tag">SQLAlchemy</span>
+        <span class="tech-tag">SQLite</span><span class="tech-tag">JWT + bcrypt</span>
+        <span class="tech-tag">MCP Protocol</span><span class="tech-tag">Docker Compose</span>
+        <span class="tech-tag">Pytest</span><span class="tech-tag">OpenAPI 3.1</span>
       </div>
     </div>
   </div>
-
-  <!-- Right: Live tester -->
   <div class="panel">
     <div class="panel-title">Live API tester</div>
     <div class="query-box">
@@ -183,26 +127,16 @@
     </div>
   </div>
 </div>
-
 <div class="links">
   <a class="link-btn" href="https://github.com/aadiiiitii001/Agent-Based-AI-System-for-Financial-Intelligence" target="_blank">GitHub repo ↗</a>
   <a class="link-btn" href="https://agent-based-ai-system-for-financial.onrender.com/docs" target="_blank">Live Swagger UI ↗</a>
   <a class="link-btn" href="https://agent-based-ai-system-for-financial.onrender.com" target="_blank">Live API ↗</a>
 </div>
-
 <script>
-const BASE = 'https://agent-based-ai-system-for-financial.onrender.com';
-const steps = ['ps-user','ps-orch','ps-mcp','ps-risk','ps-comp','ps-out'];
-
-function setQ(q){ document.getElementById('qinput').value = q; }
-
-function resetSteps(){
-  steps.forEach(s=>{
-    const el = document.getElementById(s);
-    el.classList.remove('active','done');
-  });
-}
-
+const BASE='https://agent-based-ai-system-for-financial.onrender.com';
+const steps=['ps-user','ps-orch','ps-mcp','ps-risk','ps-comp','ps-out'];
+function setQ(q){document.getElementById('qinput').value=q;}
+function resetSteps(){steps.forEach(s=>{const el=document.getElementById(s);el.classList.remove('active','done');});}
 async function animateSteps(){
   resetSteps();
   for(let i=0;i<steps.length-1;i++){
@@ -213,28 +147,32 @@ async function animateSteps(){
   }
   document.getElementById(steps[steps.length-1]).classList.add('active');
 }
-
-function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
-
-function renderResult(raw, query, ok){
-  const q = (query||'').toLowerCase();
-  const tickers = {tesla:'TSLA',nvda:'NVDA',nvidia:'NVDA',apple:'AAPL',aapl:'AAPL',tsla:'TSLA',bitcoin:'BTC',btc:'BTC'};
-  let ticker = 'ASSET';
-  for(const k in tickers){ if(q.includes(k)){ ticker=tickers[k]; break; } }
-
-  const score = raw?.risk_score ?? (40+Math.floor(Math.random()*40));
-  const sentiment = score<45?'Low':score<65?'Moderate':'High';
-  const color = score<45?'#34d399':score<65?'#fbbf24':'#f87171';
-  const summary = raw?.summary||raw?.analysis||raw?.result||raw?.message||`Analysis complete for ${ticker}. ${sentiment} risk profile detected.`;
-
-  document.getElementById('result-area').innerHTML = `
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+function renderResult(raw,query,ok){
+  const q=(query||'').toLowerCase();
+  const tickers={tesla:'TSLA',nvda:'NVDA',nvidia:'NVDA',apple:'AAPL',aapl:'AAPL',tsla:'TSLA',bitcoin:'BTC',btc:'BTC'};
+  let ticker='ASSET';
+  for(const k in tickers){if(q.includes(k)){ticker=tickers[k];break;}}
+  const details=raw?.result?.details||{};
+  const riskData=details.risk||{};
+  const marketData=details.market||{};
+  const score=riskData.risk_score?Math.round(riskData.risk_score*100):(40+Math.floor(Math.random()*40));
+  const sentiment=score<45?'Low':score<65?'Moderate':'High';
+  const color=score<45?'#34d399':score<65?'#fbbf24':'#f87171';
+  const summary=raw?.result?.summary||`Analysis complete for ${ticker}. ${sentiment} risk profile detected.`;
+  const price=marketData.price?`$${marketData.price}`:null;
+  const trend=marketData.trend||null;
+  const assessment=riskData.assessment||null;
+  document.getElementById('result-area').innerHTML=`
     <div class="result">
       <div class="result-head">
         <span>Result · ${ticker}</span>
-        <span class="${ok?'status-ok':'status-err'}">${ok?'200 OK':'Live · Simulated'}</span>
+        <span class="${ok?'status-ok':'status-err'}">${ok?'200 OK':'Simulated'}</span>
       </div>
       <div class="result-body">
         <div style="color:#e2e8f0;margin-bottom:.75rem">${summary}</div>
+        ${price?`<div style="font-size:.75rem;color:#94a3b8;margin-bottom:.5rem">Price: <span style="color:#60a5fa">${price}</span> &nbsp;|&nbsp; Trend: <span style="color:#34d399">${trend}</span></div>`:''}
+        ${assessment?`<div style="font-size:.75rem;color:#94a3b8;margin-bottom:.5rem">Assessment: <span style="color:#e2e8f0">${assessment}</span></div>`:''}
         <div class="risk-row"><span>Risk score</span><span style="color:${color}">${score}/100 · ${sentiment}</span></div>
         <div class="risk-bg"><div class="risk-fill" style="width:${score}%;background:${color}"></div></div>
         <div class="flags">
@@ -243,51 +181,45 @@ function renderResult(raw, query, ok){
           <span class="flag f-info">⚡ MCP routed</span>
           ${score>65?'<span class="flag f-warn">⚠ High volatility detected</span>':''}
         </div>
-        <pre>${JSON.stringify(raw||{status:'success',ticker,risk_score:score,sentiment,query},null,2)}</pre>
+        <pre>${JSON.stringify(raw,null,2)}</pre>
       </div>
     </div>`;
 }
-
 async function runQuery(){
-  const q = document.getElementById('qinput').value.trim();
-  if(!q){ alert('Please enter a query first.'); return; }
-  const btn = document.getElementById('run-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Running...';
-  document.getElementById('result-area').innerHTML = `<div style="color:#475569;font-size:.8rem;padding:.5rem 0"><span class="spinner"></span>Calling live API on Render...</div>`;
-
-  const anim = animateSteps();
-
-  let raw = null, ok = false;
-  try {
-    // Step 1: login
-    const loginRes = await fetch(BASE+'/login',{
+  const q=document.getElementById('qinput').value.trim();
+  if(!q){alert('Please enter a query first.');return;}
+  const btn=document.getElementById('run-btn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Running...';
+  document.getElementById('result-area').innerHTML=`<div style="color:#475569;font-size:.8rem;padding:.5rem 0"><span class="spinner"></span>Calling live API...</div>`;
+  const anim=animateSteps();
+  let raw=null,ok=false;
+  try{
+    // Login
+    const loginRes=await fetch(BASE+'/login',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({username:'admin',password:'secret'})
+      body:JSON.stringify({username:'admin',password:'admin'})
     });
-    let token = null;
-    if(loginRes.ok){
-      const ld = await loginRes.json();
-      token = ld.access_token || ld.token || null;
-    }
-    // Step 2: analyze
-    const headers = {'Content-Type':'application/json'};
-    if(token) headers['Authorization'] = 'Bearer '+token;
-    const res = await fetch(BASE+'/analyze',{
-      method:'POST', headers,
+    if(!loginRes.ok) throw new Error('Login failed: '+loginRes.status);
+    const ld=await loginRes.json();
+    const token=ld.access_token;
+    if(!token) throw new Error('No token received');
+    // Analyze
+    const res=await fetch(BASE+'/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
       body:JSON.stringify({query:q})
     });
-    if(res.ok){ raw = await res.json(); ok = true; }
-    else { raw = {error:'API returned '+res.status, note:'Showing simulated result'}; }
-  } catch(e){
-    raw = {error:'Could not reach API (Render may be sleeping)', note:'Showing simulated result', hint:'Try clicking Analyze again in 30 seconds'};
+    if(res.ok){raw=await res.json();ok=true;}
+    else{raw={error:'API returned '+res.status,note:'Showing simulated result'};}
+  }catch(e){
+    raw={error:e.message,note:'Showing simulated result',hint:'Render free tier may be sleeping — try again in 30s'};
   }
-
   await anim;
-  renderResult(raw, q, ok);
-  btn.disabled = false;
-  btn.textContent = 'Analyze';
+  renderResult(raw,q,ok);
+  btn.disabled=false;
+  btn.textContent='Analyze';
 }
 </script>
 </body>

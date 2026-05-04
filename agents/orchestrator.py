@@ -11,23 +11,18 @@ class OrchestratorAgent:
         self.compliance_agent = ComplianceAgent()
 
     def plan_tasks(self, user_query: str):
-        """
-        Decompose the user query into tasks.
-        """
-        tasks = []
-
-        query = user_query.lower()
-
-        if "stock" in query or "market" in query or "price" in query:
-            tasks.append("market_analysis")
-
-        if "risk" in query or "volatility" in query:
-            tasks.append("risk_analysis")
-
-        if "compliance" in query or "regulatory" in query:
-            tasks.append("compliance_check")
-
-        return tasks
+    tasks = []
+    query = user_query.lower()
+    if "stock" in query or "market" in query or "price" in query:
+        tasks.append("market_analysis")
+    if "risk" in query or "volatility" in query:
+        tasks.append("risk_analysis")
+    if "compliance" in query or "regulatory" in query:
+        tasks.append("compliance_check")
+    # If no tasks matched, run risk analysis by default
+    if not tasks:
+        tasks.append("risk_analysis")
+    return tasks
 
     def execute(self, user_query: str):
         """

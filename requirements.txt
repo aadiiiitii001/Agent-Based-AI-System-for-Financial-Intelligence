@@ -6,3 +6,6 @@ sqlalchemy
 langchain
 python-dotenv
 aiofiles
+yfinance==0.2.40
+anthropic==0.49.0
+python-dotenv==1.0.0

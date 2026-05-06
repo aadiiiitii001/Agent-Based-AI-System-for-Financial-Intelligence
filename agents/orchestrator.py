@@ -22,9 +22,11 @@ class OrchestratorAgent:
 
         # If no tasks matched, run risk analysis by default
         if not tasks:
-            tasks.append("risk_analysis")
-
-        return tasks
+            return {
+        "summary": "No financial query detected",
+        "details": {},
+        "error": "Please ask about a specific stock, risk, or compliance topic"
+    }
 
     def execute(self, user_query: str):
         """

@@ -1,4 +1,4 @@
-# agents/orchestrator.py
+
 from agents.market_agent import MarketAgent
 from agents.risk_agent import RiskAgent
 from agents.compliance_agent import ComplianceAgent
@@ -12,29 +12,26 @@ class OrchestratorAgent:
     def plan_tasks(self, user_query: str):
         tasks = []
         query = user_query.lower()
-
         if "stock" in query or "market" in query or "price" in query:
             tasks.append("market_analysis")
         if "risk" in query or "volatility" in query:
             tasks.append("risk_analysis")
         if "compliance" in query or "regulatory" in query:
             tasks.append("compliance_check")
-
-        # If no tasks matched, run risk analysis by default
-        if not tasks:
-            return {
-        "summary": "No financial query detected",
-        "details": {},
-        "error": "Please ask about a specific stock, risk, or compliance topic"
-    }
+        return tasks  # returns empty list if no match
 
     def execute(self, user_query: str):
-        """
-        Execute planned tasks and aggregate results.
-        """
         plan = self.plan_tasks(user_query)
-        results = {}
 
+        # No matching tasks — return clear error immediately
+        if not plan:
+            return {
+                "summary": "No financial query detected",
+                "details": {},
+                "error": "Please ask about a specific stock, risk, or compliance topic. Example: 'Analyze Tesla stock risk'"
+            }
+
+        results = {}
         for task in plan:
             if task == "market_analysis":
                 results["market"] = self.market_agent.run(user_query)
@@ -46,11 +43,7 @@ class OrchestratorAgent:
         return self.aggregate_results(results)
 
     def aggregate_results(self, results: dict):
-        """
-        Combine all agent outputs into a structured response.
-        """
-        final_report = {
+        return {
             "summary": "Automated financial intelligence report",
             "details": results
         }
-        return final_report

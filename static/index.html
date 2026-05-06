@@ -48,7 +48,7 @@
   .result{border:1px solid #1e293b;border-radius:10px;overflow:hidden;margin-top:4px}
   .result-head{display:flex;justify-content:space-between;align-items:center;padding:.5rem .875rem;background:#0d1520;border-bottom:1px solid #1e293b;font-size:.72rem}
   .result-head span:first-child{color:#94a3b8;font-weight:500}
-  .status-ok{color:#34d399}.status-err{color:#f87171}
+  .status-ok{color:#34d399}.status-err{color:#f87171}.status-warn{color:#fbbf24}
   .result-body{padding:1rem;font-size:.8rem;line-height:1.7}
   .risk-row{display:flex;justify-content:space-between;font-size:.75rem;color:#94a3b8;margin-bottom:3px}
   .risk-bg{height:6px;background:#1e293b;border-radius:3px;overflow:hidden;margin-bottom:.75rem}
@@ -148,26 +148,82 @@ async function animateSteps(){
   document.getElementById(steps[steps.length-1]).classList.add('active');
 }
 function delay(ms){return new Promise(r=>setTimeout(r,ms));}
-function renderResult(raw,query,ok){
+
+function renderResult(raw, query, ok){
   const q=(query||'').toLowerCase();
-  const tickers={tesla:'TSLA',nvda:'NVDA',nvidia:'NVDA',apple:'AAPL',aapl:'AAPL',tsla:'TSLA',bitcoin:'BTC',btc:'BTC'};
+  const tickers={tesla:'TSLA',nvda:'NVDA',nvidia:'NVDA',apple:'AAPL',aapl:'AAPL',tsla:'TSLA',bitcoin:'BTC',btc:'BTC',microsoft:'MSFT',msft:'MSFT',amazon:'AMZN',google:'GOOGL'};
   let ticker='ASSET';
   for(const k in tickers){if(q.includes(k)){ticker=tickers[k];break;}}
+
+  // ── CASE 1: API call failed entirely ──
+  if(!ok){
+    document.getElementById('result-area').innerHTML=`
+      <div class="result">
+        <div class="result-head"><span>Result</span><span class="status-err">Error</span></div>
+        <div class="result-body">
+          <div style="color:#f87171;margin-bottom:.5rem">⚠ ${raw?.error||'API call failed'}</div>
+          <div style="color:#94a3b8;font-size:.75rem">${raw?.hint||'Please try again.'}</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // ── CASE 2: No financial query detected (orchestrator returned error) ──
+  if(raw?.result?.error || raw?.error){
+    document.getElementById('result-area').innerHTML=`
+      <div class="result">
+        <div class="result-head"><span>Result · ${ticker}</span><span class="status-warn">No data</span></div>
+        <div class="result-body">
+          <div style="color:#fbbf24;margin-bottom:.75rem">⚠ No financial data found for this query.</div>
+          <div style="color:#94a3b8;font-size:.75rem;line-height:2">
+            Try queries like:<br>
+            • "Analyze Tesla stock risk"<br>
+            • "Apple market volatility"<br>
+            • "NVDA compliance check"<br>
+            • "Bitcoin risk assessment"
+          </div>
+        </div>
+      </div>`;
+    return;
+  }
+
   const details=raw?.result?.details||{};
   const riskData=details.risk||{};
   const marketData=details.market||{};
-  const score=riskData.risk_score?Math.round(riskData.risk_score*100):(40+Math.floor(Math.random()*40));
+
+  // ── CASE 3: API returned 200 but no real data in details ──
+  if(!riskData.risk_score && !marketData.price){
+    document.getElementById('result-area').innerHTML=`
+      <div class="result">
+        <div class="result-head"><span>Result · ${ticker}</span><span class="status-warn">No data</span></div>
+        <div class="result-body">
+          <div style="color:#fbbf24;margin-bottom:.75rem">⚠ No financial data found for this query.</div>
+          <div style="color:#94a3b8;font-size:.75rem;line-height:2">
+            Try queries like:<br>
+            • "Analyze Tesla stock risk"<br>
+            • "Apple market volatility"<br>
+            • "NVDA compliance check"<br>
+            • "Bitcoin risk assessment"
+          </div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // ── CASE 4: Real data returned ──
+  const score=Math.round((riskData.risk_score||0)*100);
   const sentiment=score<45?'Low':score<65?'Moderate':'High';
   const color=score<45?'#34d399':score<65?'#fbbf24':'#f87171';
-  const summary=raw?.result?.summary||`Analysis complete for ${ticker}. ${sentiment} risk profile detected.`;
+  const summary=raw?.result?.summary||'Automated financial intelligence report';
   const price=marketData.price?`$${marketData.price}`:null;
   const trend=marketData.trend||null;
   const assessment=riskData.assessment||null;
+
   document.getElementById('result-area').innerHTML=`
     <div class="result">
       <div class="result-head">
         <span>Result · ${ticker}</span>
-        <span class="${ok?'status-ok':'status-err'}">${ok?'200 OK':'Simulated'}</span>
+        <span class="status-ok">200 OK</span>
       </div>
       <div class="result-body">
         <div style="color:#e2e8f0;margin-bottom:.75rem">${summary}</div>
@@ -185,6 +241,7 @@ function renderResult(raw,query,ok){
       </div>
     </div>`;
 }
+
 async function runQuery(){
   const q=document.getElementById('qinput').value.trim();
   if(!q){alert('Please enter a query first.');return;}
@@ -195,7 +252,6 @@ async function runQuery(){
   const anim=animateSteps();
   let raw=null,ok=false;
   try{
-    // Login
     const loginRes=await fetch(BASE+'/login',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -205,16 +261,15 @@ async function runQuery(){
     const ld=await loginRes.json();
     const token=ld.access_token;
     if(!token) throw new Error('No token received');
-    // Analyze
     const res=await fetch(BASE+'/analyze',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
       body:JSON.stringify({query:q})
     });
     if(res.ok){raw=await res.json();ok=true;}
-    else{raw={error:'API returned '+res.status,note:'Showing simulated result'};}
+    else{raw={error:'API returned '+res.status};}
   }catch(e){
-    raw={error:e.message,note:'Showing simulated result',hint:'Render free tier may be sleeping — try again in 30s'};
+    raw={error:e.message,hint:'Render free tier may be sleeping — try again in 30s'};
   }
   await anim;
   renderResult(raw,q,ok);

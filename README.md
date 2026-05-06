@@ -141,11 +141,16 @@ Input Query
 - Compliance flags (if any)
 - Structured, explainable decision summary
 
+<img width="1920" height="1080" alt="Screenshot (146)" src="https://github.com/user-attachments/assets/358e3b00-86d4-4d18-92d7-243a85e8e081" />
+<img width="1920" height="1080" alt="Screenshot (147)" src="https://github.com/user-attachments/assets/26ea806b-9d30-41c2-8750-48550df164cf" />
+
+
 ### 📈 Future Enhancements
 - PostgreSQL integration
 - RAG-based compliance document analysis
 - Real-time market data ingestion
 - ML-based risk scoring models
+
 - Role-based access control (RBAC)
 
 ### 👤 Author

@@ -1,139 +1,123 @@
-import yfinance as yf
- 
- 
-SYMBOL_MAP = {
-    "TESLA": "TSLA", "TSLA": "TSLA",
-    "APPLE": "AAPL", "AAPL": "AAPL",
-    "GOOGLE": "GOOGL", "GOOGL": "GOOGL", "ALPHABET": "GOOGL",
-    "MICROSOFT": "MSFT", "MSFT": "MSFT",
-    "AMAZON": "AMZN", "AMZN": "AMZN",
-    "NVIDIA": "NVDA", "NVDA": "NVDA",
-    "META": "META", "FACEBOOK": "META",
-    "NETFLIX": "NFLX", "NFLX": "NFLX",
-}
- 
- 
+
+import os
+import requests
+
 class MarketAgent:
-    """
-    Fetches real market data from Yahoo Finance via yfinance.
-    Returns OHLCV prices, volume, and daily change.
-    """
- 
     def __init__(self):
+        self.api_key = os.getenv("ALPHAVANTAGE_API_KEY")
+        self.alpha_url = "https://www.alphavantage.co/query"
         self.name = "MarketAgent"
- 
-    def extract_symbol(self, query: str) -> str:
-        """
-        Extract ticker symbol from natural language query.
-        Handles: 'TSLA', 'Tesla', 'Should I buy NVDA?', etc.
-        """
-        query_upper = query.upper()
-        for keyword, symbol in SYMBOL_MAP.items():
-            if keyword in query_upper:
-                return symbol
- 
-        # Fallback: look for a 2-5 letter all-caps word (likely a ticker)
-        import re
-        matches = re.findall(r'\b[A-Z]{2,5}\b', query_upper)
-        for match in matches:
-            if match not in {"THE", "AND", "FOR", "BUY", "SELL", "WHAT", "IS", "ARE"}:
-                return match
- 
-        return "UNKNOWN"
- 
-    def fetch_market_data(self, symbol: str) -> dict:
-        """
-        Fetch real OHLCV data from Yahoo Finance.
-        Returns price, change, volume, and 5-day history.
-        """
-        ticker = yf.Ticker(symbol)
- 
-        # Get latest info
-        info = ticker.info
- 
-        # Get last 5 days of price history
-        hist = ticker.history(period="5d")
- 
-        if hist.empty:
-            return {"error": f"No data found for symbol: {symbol}"}
- 
-        latest = hist.iloc[-1]
-        prev   = hist.iloc[-2] if len(hist) > 1 else latest
- 
-        current_price  = round(float(latest["Close"]), 2)
-        previous_close = round(float(prev["Close"]), 2)
-        change         = round(current_price - previous_close, 2)
-        change_pct     = round((change / previous_close) * 100, 2) if previous_close else 0
- 
-        return {
-            "symbol":         symbol,
-            "current_price":  current_price,
-            "previous_close": previous_close,
-            "change":         change,
-            "change_pct":     change_pct,
-            "volume":         int(latest["Volume"]),
-            "day_high":       round(float(latest["High"]), 2),
-            "day_low":        round(float(latest["Low"]), 2),
-            "market_cap":     info.get("marketCap", "N/A"),
-            "pe_ratio":       info.get("trailingPE", "N/A"),
-            "week_52_high":   info.get("fiftyTwoWeekHigh", "N/A"),
-            "week_52_low":    info.get("fiftyTwoWeekLow", "N/A"),
-            "company_name":   info.get("longName", symbol),
-            "sector":         info.get("sector", "N/A"),
-        }
- 
-    def run(self, query: str) -> dict:
-        """
-        Main method called by Orchestrator.
-        """
-        symbol = self.extract_symbol(query)
- 
-        if symbol == "UNKNOWN":
-            return {
-                "status": "skipped",
-                "reason": "Could not identify a stock symbol in your query.",
-                "hint":   "Try mentioning a company name or ticker, e.g. 'Analyze Tesla' or 'What is NVDA doing?'"
-            }
- 
+
+    US_SYMBOLS = {
+        "TESLA": "TSLA", "TSLA": "TSLA",
+        "APPLE": "AAPL", "AAPL": "AAPL",
+        "NVIDIA": "NVDA", "NVDA": "NVDA",
+        "GOOGLE": "GOOGL", "GOOGL": "GOOGL", "ALPHABET": "GOOGL",
+        "MICROSOFT": "MSFT", "MSFT": "MSFT",
+        "AMAZON": "AMZN", "AMZN": "AMZN",
+        "META": "META", "FACEBOOK": "META",
+        "NETFLIX": "NFLX", "NFLX": "NFLX",
+    }
+
+    INDIA_SYMBOLS = {
+        "TCS": "TCS.NS", "TATA CONSULTANCY": "TCS.NS",
+        "INFOSYS": "INFY.NS", "INFY": "INFY.NS",
+        "WIPRO": "WIPRO.NS",
+        "RELIANCE": "RELIANCE.NS",
+        "HDFC": "HDFCBANK.NS", "HDFCBANK": "HDFCBANK.NS",
+        "ICICI": "ICICIBANK.NS", "ICICIBANK": "ICICIBANK.NS",
+        "HCL": "HCLTECH.NS", "HCLTECH": "HCLTECH.NS",
+        "ZOMATO": "ZOMATO.NS",
+        "PAYTM": "PAYTM.NS",
+        "BAJAJ": "BAJAJFINSV.NS",
+        "ADANI": "ADANIENT.NS",
+        "TATA MOTORS": "TATAMOTORS.NS", "TATAMOTORS": "TATAMOTORS.NS",
+        "TATA STEEL": "TATASTEEL.NS",
+        "SBI": "SBIN.NS", "STATE BANK": "SBIN.NS",
+        "AXIS BANK": "AXISBANK.NS", "AXISBANK": "AXISBANK.NS",
+        "KOTAK": "KOTAKBANK.NS",
+        "ONGC": "ONGC.NS",
+        "MARUTI": "MARUTI.NS",
+        "SUNPHARMA": "SUNPHARMA.NS", "SUN PHARMA": "SUNPHARMA.NS",
+        "TECH MAHINDRA": "TECHM.NS", "TECHM": "TECHM.NS",
+        "NIFTY": "^NSEI", "SENSEX": "^BSESN",
+    }
+
+    def extract_symbol(self, query: str):
+        q = query.upper().strip()
+        for k, v in self.US_SYMBOLS.items():
+            if k in q:
+                return v, "US"
+        for k, v in self.INDIA_SYMBOLS.items():
+            if k in q.title() or k in q:
+                return v, "IN"
+        return None, None
+
+    def get_trend(self, change: float) -> str:
+        if change > 1:    return "Bullish 📈"
+        elif change < -1: return "Bearish 📉"
+        else:             return "Neutral ➡"
+
+    def get_us_data(self, symbol: str) -> dict:
         try:
-            data = self.fetch_market_data(symbol)
- 
-            if "error" in data:
-                return {"status": "error", "message": data["error"]}
- 
-            # Add human-readable sentiment
-            if data["change_pct"] > 2:
-                sentiment = "strongly bullish"
-            elif data["change_pct"] > 0:
-                sentiment = "slightly bullish"
-            elif data["change_pct"] < -2:
-                sentiment = "strongly bearish"
-            else:
-                sentiment = "slightly bearish"
- 
+            url = f"{self.alpha_url}?function=GLOBAL_QUOTE&symbol={symbol}&apikey={self.api_key}"
+            r = requests.get(url, timeout=10)
+            quote = r.json().get("Global Quote", {})
+            if not quote or "05. price" not in quote:
+                return None
+            price = round(float(quote["05. price"]), 2)
+            change = float(quote["10. change percent"].replace("%", ""))
             return {
-                "status":    "success",
-                "agent":     self.name,
-                "symbol":    data["symbol"],
-                "company":   data["company_name"],
-                "sector":    data["sector"],
-                "price":     data["current_price"],
-                "change":    data["change"],
-                "change_pct": data["change_pct"],
-                "sentiment": sentiment,
-                "volume":    data["volume"],
-                "day_high":  data["day_high"],
-                "day_low":   data["day_low"],
-                "pe_ratio":  data["pe_ratio"],
-                "market_cap": data["market_cap"],
-                "52w_high":  data["week_52_high"],
-                "52w_low":   data["week_52_low"],
-            }
- 
-        except Exception as e:
-            return {
-                "status": "error",
-                "agent":  self.name,
                 "symbol": symbol,
-                "message": f"Failed to fetch market data: {str(e)}"
+                "price": price,
+                "change_percent": round(change, 2),
+                "trend": self.get_trend(change),
+                "volume": quote.get("06. volume", "N/A"),
+                "day_high": quote.get("03. high", "N/A"),
+                "day_low": quote.get("04. low", "N/A"),
+                "currency": "USD",
+                "exchange": "NASDAQ/NYSE",
+                "data_source": "AlphaVantage (Real-time)"
             }
+        except:
+            return None
+
+    def get_india_data(self, symbol: str) -> dict:
+        try:
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=1d"
+            headers = {"User-Agent": "Mozilla/5.0"}
+            r = requests.get(url, headers=headers, timeout=10)
+            result = r.json()["chart"]["result"][0]
+            meta = result["meta"]
+            price = meta.get("regularMarketPrice", 0)
+            prev = meta.get("previousClose") or meta.get("chartPreviousClose", price)
+            change = ((price - prev) / prev * 100) if prev else 0
+            day_high = meta.get("regularMarketDayHigh", "N/A")
+            day_low = meta.get("regularMarketDayLow", "N/A")
+            volume = meta.get("regularMarketVolume", "N/A")
+            return {
+                "symbol": symbol,
+                "price": round(price, 2),
+                "change_percent": round(change, 2),
+                "trend": self.get_trend(change),
+                "volume": volume,
+                "day_high": day_high,
+                "day_low": day_low,
+                "currency": "INR",
+                "exchange": "NSE/BSE",
+                "data_source": "Yahoo Finance (Real-time)"
+            }
+        except:
+            return None
+
+    def run(self, query: str) -> dict:
+        symbol, market = self.extract_symbol(query)
+        if not symbol:
+            return {"status": "skipped", "reason": "No valid stock symbol identified"}
+
+        data = self.get_india_data(symbol) if market == "IN" else self.get_us_data(symbol)
+
+        if not data:
+            return {"status": "skipped", "reason": f"No market data available for {symbol}"}
+
+        return data
